@@ -3,6 +3,8 @@
 Created on Sun Nov  2 20:07:42 2025
 
 @author: Alex
+
+Simulation currently set up for a 0 radian phase offset.
 """
 
 import sim
@@ -26,13 +28,13 @@ for i in vals:
     a = 7 * 1.496e11 #semi-major 
     theta = 0
     
-    xp = (sun2.m/sunSum) * a # Primary star position in binary
-    xs = -(sun1.m/sunSum) * a # Secondary star position in binary
+    xp = -(sun2.m/sunSum) * a # Primary star position in binary
+    xs = (sun1.m/sunSum) * a # Secondary star position in binary
     
     omega = sqrt((2 * G * sunSum)/a**3) #angular velocity of binary
     
-    vp = xp * omega #velocity of primary in binary
-    vs = -xs * omega #velocity of secondary in binary
+    vp = -xp * omega #velocity of primary in binary
+    vs = xs * omega #velocity of secondary in binary
     
     rTidal = ((2 * bh.m/sunSum)**(1/3)) * a #tidal radius
     r0 = 10 * rTidal #initial radius
@@ -51,11 +53,11 @@ for i in vals:
     vxcm = rDot * cos(f0) - r0 * fDot * sin(f0) # x 
     vycm = rDot * sin(f0) + r0 * fDot * cos(f0)
     
-    sun1.pos = [xcm, xp + ycm]
-    sun2.pos = [xcm, xs + ycm]
+    sun1.pos = [xp + xcm, ycm]
+    sun2.pos = [xs + xcm, ycm]
     
-    sun1.vel = [vp + vxcm, vycm]
-    sun2.vel = [vs + vxcm, vycm]
+    sun1.vel = [vxcm, vp + vycm]
+    sun2.vel = [vxcm, vs + vycm]
     
     timeStep = sqrt((a**3)/(G * sunSum))
     
